@@ -77,8 +77,9 @@ function keyPressed() {
   // if space is pressed, make isPaused variable true
   if (key === ' ') {
     isPaused = !isPaused
+
+    // prevent page from scrolling down
+    return false;
   }
-
 }
-
 

@@ -8,7 +8,6 @@
   <!-- Three folders deep, so three levels up to the stylesheet -->
   <link rel="stylesheet" href="../../../style.css">
 
-<!--  <script src="../../../node_modules"></script>-->
   <!-- p5.js, version 2.3.3. Every sketch page needs this line. -->
   <script src="https://cdn.jsdelivr.net/npm/p5@2.3.3/lib/p5.min.js"></script>
 
@@ -37,11 +36,22 @@
 
     <h3> Notes </h3>
     <p>
-
-<!--      -->
-<!--      -->
-
+      The ball initially moves across the canvas, dynamically scaling its size and shifting colors
+      between blue and white depending on which half of the screen it occupies.
     </p>
+    <p>
+      This sketch also introduces custom interactivity through the following controls:
+    </p>
+    <ul>
+      <li><strong>Mouse Click:</strong> Randomizes the ball's color theme, instantly reverses its movement direction,
+        and flips its scaling behavior (shrinking vs. growing).</li>
+      <li><strong>Spacebar:</strong> Toggles a complete pause on all operations. When paused, the ball freezes in
+        place and ignores all mouse inputs. Pressing the spacebar a second time resumes the interactive simulation.</li>
+    </ul>
+
+    <h3> Github Repo Link </h3>
+    <a href ="https://github.com/sanaagarwal/sanaagarwal.github.io/tree/main/projects/iat-806/lab-02">Lab 02</a>
+
   </main>
 
   <footer>
