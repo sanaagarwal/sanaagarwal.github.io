@@ -52,14 +52,14 @@ In VS Code, open the Command Palette — `Cmd+Shift+P` on Mac, `Ctrl+Shift+P` on
 
 It's plain HTML and CSS. Open a file, change it, save it.
 
-Start with `index.html`. Look for the `EDIT ME` comments:
+Start with `mainPageIndex.html`. Look for the `EDIT ME` comments:
 
 ```html
 <!-- EDIT ME: your name -->
-<a class="site-name" href="index.html">Your Name</a>
+<a class="site-name" href="mainPageIndex.html">Your Name</a>
 ```
 
-Put your name in. Do the same in `projects/index.html`, `projects/iat-806/index.html`, and `projects/iat-806/lab-01/index.html`.
+Put your name in. Do the same in `projects/projectsIndex.html`, `projects/iat-806/iatIndex.html`, and `projects/iat-806/lab-01/index.html`.
 
 To change how it looks, open `style.css`. The colors are at the top:
 
@@ -78,7 +78,7 @@ Change `--accent` and every link on every page changes with it. Make the site yo
 ### Look at it before you publish
 
 1. Install the **Live Server** extension in VS Code.
-2. Right-click `index.html` → **Open with Live Server**.
+2. Right-click `mainPageIndex.html` → **Open with Live Server**.
 
 The site opens from your own computer. Save a file and the page reloads itself.
 
@@ -108,11 +108,11 @@ projects/iat-806/
 └── final-project/
 ```
 
-**Put your work in it.** Replace `sketch.js` with yours. Edit that folder's `index.html` — the title, the description, your notes. Images and sounds go in the same folder, and you load them by name alone: `loadImage("cat.jpg")`, not a long path.
+**Put your work in it.** Replace `sketch.js` with yours. Edit that folder's `mainPageIndex.html` — the title, the description, your notes. Images and sounds go in the same folder, and you load them by name alone: `loadImage("cat.jpg")`, not a long path.
 
-Each folder has to run on its own. Open its `index.html` with Live Server. The sketch should work with nothing from any other folder.
+Each folder has to run on its own. Open its `mainPageIndex.html` with Live Server. The sketch should work with nothing from any other folder.
 
-**Link to it.** Open `projects/iat-806/index.html` and find the list:
+**Link to it.** Open `projects/iat-806/iatIndex.html` and find the list:
 
 ```html
 <ul class="card-list">
@@ -143,9 +143,9 @@ https://your-username.github.io/projects/iat-806/lab-02/
 
 | Page | Link |
 |---|---|
-| `index.html` | `style.css` |
-| `projects/index.html` | `../style.css` |
-| `projects/iat-806/index.html` | `../../style.css` |
+| `mainPageIndex.html` | `style.css` |
+| `projects/projectsIndex.html` | `../style.css` |
+| `projects/iat-806/iatIndex.html` | `../../style.css` |
 | `projects/iat-806/lab-01/index.html` | `../../../style.css` |
 
 **Works on your computer, broken on the live site.** Capitalization. Your computer treats `Sketch.js` and `sketch.js` as the same file. The server does not. Keep filenames lowercase and make your HTML match exactly.
@@ -180,4 +180,4 @@ Wait a minute and the address appears at the top of that same screen:
 https://your-username.github.io/repo-name/
 ```
 
-The repo needs to be public, and it needs an `index.html` at the top level. That's it — a sketch, a game, a class project, anything.
+The repo needs to be public, and it needs an `mainPageIndex.html` at the top level. That's it — a sketch, a game, a class project, anything.
