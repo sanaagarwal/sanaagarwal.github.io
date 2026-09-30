@@ -22,7 +22,7 @@
 
 // enter for fireworks/party/music
 
-let petColor = "white"
+let petColor = "grey"
 let petExpr
 let bgScene
 let petAnimal = "bear"
@@ -40,11 +40,11 @@ async function setup() {
   let canvas = createCanvas(700, 400);
   canvas.parent('sketch-holder');
 
-  bgScene = await loadImage("bg/home.png");
-  listOfBg[0] = await loadImage('bg/clouds.png');
-  listOfBg[1] = await loadImage('bg/halloween.png');
-  listOfBg[2] = await loadImage('bg/meadow.png');
-  listOfBg[3] = await loadImage('bg/stars.png');
+  bgScene = await loadImage("./bg/home.png");
+  listOfBg[0] = await loadImage('./bg/clouds.png');
+  listOfBg[1] = await loadImage('./bg/halloween.png');
+  listOfBg[2] = await loadImage('./bg/meadow.png');
+  listOfBg[3] = await loadImage('./bg/stars.png');
 
 }
 
