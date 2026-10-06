@@ -1,34 +1,72 @@
-// global variables
-let frame0
-
-let frames = []
+let character = []
+let ball = []
+let lights = []
 let index
 let numFrames = 8
+let bg
+let audios = []
+let currentAudioIndex = -1
+let isPaused = false
 
-// setup only runs once
 async function setup() {
   let canvas = createCanvas(700, 400);
   canvas.parent('sketch-holder');
 
+  bg = await loadImage('backdrop.png');
   for (let i = 0; i < numFrames; i++) {
-   // let fileName = `frames/frame_${i}.png`
-    let fileName = "frames/frame_"+i+".png";
-    frames.push(await loadImage(fileName));
+    let fileName1 = "frames/frame_"+i+".png";
+    character.push(await loadImage(fileName1));
+    let fileName2 = "ball/frame_"+i+".png";
+    ball.push(await loadImage(fileName2));
+    let fileName3 = "lights/spotlight_"+i+".png";
+    lights.push(await loadImage(fileName3));
+  }
+
+  for (let i=0; i < 5; i++){
+    let audioName = "audios/audio_"+i+".mp3";
+    audios.push(await loadSound(audioName));
   }
 }
 
-// draw runs forever (on loop)
 function draw() {
-  background(60);
-  fill (1000)
+  background(bg);
 
-  let speed = 15
+  let speed = 10
   let slowFrame = floor(frameCount / speed)
-  index = slowFrame % frames.length
-  image(frames[index], 100, 100, 192, 256)
+  index = slowFrame % numFrames
 
-  text(frameCount, 500, 300)
+  image(character[index], 215, 80, 270, 330)
 
+  image(lights[index], 5 , 0)
+  image(lights[index], 0, 0)
+
+  image(ball[index], 530, -5, 140, 175) // right ball
+  image(ball[(slowFrame+2)%numFrames], 35, -5, 140, 175) // left ball
 
 }
 
+function mousePressed() {
+  if (isPaused) return false;
+
+  userStartAudio();
+  if (currentAudioIndex >= 0){
+    audios[currentAudioIndex].stop();
+  }
+  currentAudioIndex = (currentAudioIndex + 1) % audios.length;
+  audios[currentAudioIndex].play();
+}
+
+function keyPressed() {
+  // look into stopping only dancer and not whole thing
+  if (key === ' ') {
+    isPaused = !isPaused;
+    if (isPaused) {
+      noLoop()
+      getAudioContext().suspend();
+    } else {
+      loop()
+      getAudioContext().resume();
+    }
+    return false;
+  }
+}
