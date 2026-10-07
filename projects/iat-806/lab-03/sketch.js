@@ -1,12 +1,14 @@
 let character = []
 let ball = []
 let lights = []
-let index
+let index = 0
 let numFrames = 8
 let bg
 let audios = []
 let currentAudioIndex = -1
 let isPaused = false
+let dancerFrames = 0
+let dancerSpeed = 10;
 
 async function setup() {
   let canvas = createCanvas(700, 400);
@@ -35,7 +37,12 @@ function draw() {
   let slowFrame = floor(frameCount / speed)
   index = slowFrame % numFrames
 
-  image(character[index], 215, 80, 270, 330)
+  if (!isPaused) {
+    dancerFrames++;
+  }
+
+  let dancerIndex = floor (dancerFrames / dancerSpeed)  % numFrames;
+  image(character[dancerIndex], 215, 80, 270, 330)
 
   image(lights[index], 5 , 0)
   image(lights[index], 0, 0)
@@ -54,19 +61,21 @@ function mousePressed() {
   }
   currentAudioIndex = (currentAudioIndex + 1) % audios.length;
   audios[currentAudioIndex].play();
+  audios[currentAudioIndex].loop();
 }
 
 function keyPressed() {
-  // look into stopping only dancer and not whole thing
   if (key === ' ') {
     isPaused = !isPaused;
     if (isPaused) {
-      noLoop()
       getAudioContext().suspend();
     } else {
-      loop()
       getAudioContext().resume();
     }
     return false;
+  }
+
+  if (key === 's') {
+    dancerSpeed = random (0,20);
   }
 }
