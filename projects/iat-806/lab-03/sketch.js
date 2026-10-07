@@ -76,6 +76,7 @@ function keyPressed() {
   }
 
   if (key === 's') {
+    if (isPaused) return false;
     dancerSpeed = random (0,20);
   }
 }
