@@ -1,4 +1,4 @@
-function drawPuppy(x, y, animalColor, sizeScale) {
+function drawPuppy(x, y, animalColor, sizeScale, hatIndex) {
     push(); translate(x, y); scale(sizeScale); noStroke();
 
     // body
@@ -9,7 +9,8 @@ function drawPuppy(x, y, animalColor, sizeScale) {
     push(); translate(-46, -5); rotate(0.25);  ellipse(0, 0, 55, 75); pop();
     push(); translate(46, -5);  rotate(-0.25); ellipse(0, 0, 55, 75); pop();
 
-    drawHat()
+    // hat
+    drawHat(hatIndex)
 
     // head
     fill(animalColor); circle(0, 0, 120);
@@ -29,7 +30,7 @@ function drawPuppy(x, y, animalColor, sizeScale) {
     pop();
 }
 
-function drawHat() {
+function drawHat(hatIndex) {
     push();
     translate(0, -55);
     noStroke();
@@ -76,11 +77,11 @@ function drawHomeStage() {
     fill("#4a3b32");
     textAlign(CENTER);
     textSize(23);
-    text("Pick Your Pet's Outing Outfit!", width / 2, 67);
-    textSize(15);
-    text("Press [ h ] to change hat  •  Press [ c ] to change color", width / 2, 95);
+    text("Pick Your Pet's Outing Outfit!", width / 2, 70);
+    textSize(16);
+    text("Press [ h ] to change hat  •  Press [ c ] to change color", width / 2, 100);
     textSize(17);
-    text("➔ Press [ spacebar ] to go to the park! ➔", width / 2, 120);
+    text("➔ Press [ spacebar ] to go to the park! ➔", width / 2, 135);
 }
 
 function drawParkStage(fetchCount) {
@@ -106,8 +107,8 @@ function drawParkStage(fetchCount) {
 
     // instructions
     fill("#6a6a6a"); textAlign(LEFT); textSize(16);
-    text("🥏 Discs Caught: " + fetchCount + " / 5", 30, 30);
-    textSize(13); fill("#6a6a6a");
+    text("🥏 Discs Caught: " + fetchCount , 30, 30);
+    textSize(14); fill("#6a6a6a");
     text("👉 Click inside the frame to throw a toy disc!", 30, 50);
 }
 
