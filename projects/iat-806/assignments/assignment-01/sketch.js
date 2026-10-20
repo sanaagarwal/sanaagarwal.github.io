@@ -50,7 +50,7 @@ function draw() {
 
         // draw discs where clicked
         for (let i = 0; i < droppedDiscs.length; i++) {
-            fill("#ea4b4b"), stroke("#4e2828"), strokeWeight(2);
+            fill("#ea4b4b"); stroke("#4e2828"); strokeWeight(2);
             ellipse(droppedDiscs[i].x, droppedDiscs[i].y, 40, 20);
         }
 
