@@ -1,11 +1,11 @@
-class Star {
-  constructor(x, y, c, l, maxL = 30) {
+class Ball {
+  constructor(x, y, c, d, maxD = 30) {
     this.x = x;
     this.y = y;
     this.baseColor = c;
     this.color = c;
-    this.l = l;
-    this.maxL = maxL;
+    this.d = d;
+    this.maxD = maxD;
     this.highlightC = "red"
     this.isClicked = false;
   }
@@ -18,11 +18,11 @@ class Star {
 
   contains(pointX, pointY) {
     let dis = dist(this.x, this.y, pointX, pointY);
-    return dis < this.l
+    return dis < this.d
   }
 
   changeSize(byHowMuch) {
-    this.l = constrain(this.l + random(-byHowMuch, byHowMuch), 15, this.maxL);
+    this.d = constrain(this.d + random(-byHowMuch, byHowMuch), 15, this.maxD);
   }
 
   move(byHowMuch) {
@@ -54,17 +54,15 @@ class Star {
 
   show() {
     fill(this.color);
-    // noStroke();
-
-    circle(this.x, this.y, this.l)
+    circle(this.x, this.y, this.d)
   }
 }
 
-function createRandomStar() {
+function createRandomBall() {
   let X = random(0, width);
   let Y = random(0, height)
-  let C = color(192, 192, 192)
-  let L = 10;
+  let C = color("orange")
+  let D = 15;
 
-  return new Star(X, Y, C, L);
+  return new Ball(X, Y, C, D);
 }

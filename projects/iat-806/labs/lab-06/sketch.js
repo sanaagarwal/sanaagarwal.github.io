@@ -1,5 +1,5 @@
-let stars = [];
-let numStars = 400;
+let balls = [];
+let numBalls = 2000;
 let bodySegmentation
 let video
 let segmentation
@@ -20,8 +20,8 @@ async function setup() {
   bodySegmentation.detectStart(video, gotResults);
 
 
-  for (let i = 0; i < numStars; i++) {
-    stars.push(createRandomStar());
+  for (let i = 0; i < numBalls; i++) {
+    balls.push(createRandomBall());
   }
 }
 
@@ -29,11 +29,11 @@ function draw() {
   background(120);
   //image(video, 0, 0);
 
-  if (segmentation) {
-    image(segmentation.mask, 0, 0, width, height);
-  }
+  // if (segmentation) {
+  //   image(segmentation.mask, 0, 0, width, height);
+  // }
 
-  for (let star of stars) {
+  for (let star of balls) {
     //let active = star.contains(mouseX, mouseY)
     let active
     if (segmentation){
@@ -45,13 +45,12 @@ function draw() {
 }
 
 function mousePressed() {
-  stars.forEach((star) => {
-    let active = star.contains(mouseX, mouseY)
-    star.respond(active);
+  balls.forEach((ball) => {
+    let active = ball.contains(mouseX, mouseY)
+    ball.respond(active);
   })
 }
 
 function gotResults(result) {
   segmentation = result;
 }
-
