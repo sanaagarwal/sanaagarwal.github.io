@@ -2,8 +2,9 @@ let video;
 let faceMesh;
 let faces = [];
 
-let blade;
+let blade; let knife;
 let fruits = [];
+let particles = [];
 
 let score = 0;
 let lives = 10;
@@ -11,9 +12,21 @@ let gameState = "start";
 let gameFrames = 0;
 let gameOverReason = "";
 
+let sliceSound = new Audio("slice.mp3");
+let explosionSound = new Audio("explosion.mp3");
+sliceSound.volume = 0.2;
+explosionSound.volume = 0.2;
+
+let explosionTimer = 0;
+let explosionX = 0;
+let explosionY = 0;
+let explosionParticles = [];
+
 async function setup() {
     const canvas = createCanvas(800, 600);
     canvas.parent("sketch-holder")
+
+    knife = await loadImage("knife.png");
 
     video = createCapture(VIDEO);
     video.size(width, height);
@@ -34,13 +47,20 @@ function gotFaces(results) {
     faces = results;
 }
 
+function playSound(sound) {
+    sound.currentTime = 0;
+    sound.play().catch(() => {});
+}
+
 function draw() {
+
     // mirror webcam
     push();
     translate(width, 0);
     scale(-1, 1);
     image(video, 0, 0, width, height);
     pop();
+
 
     // darken webcam
     fill(0, 100);
@@ -56,6 +76,23 @@ function draw() {
     // start screen
     if (gameState === "start") {
         displayStartScreen();
+        return;
+    }
+
+    if (gameState === "exploding") {
+
+        // Show remaining fruits without moving them
+        for (let fruit of fruits) {
+            fruit.display();
+        }
+
+        displayScore();
+        displayExplosion();
+
+        if (explosionTimer <= 0) {
+            gameState = "gameover";
+        }
+
         return;
     }
 
@@ -83,15 +120,31 @@ function draw() {
         return;
     }
 
-
     gameFrames++;
 
-    // create fruits every 1.2 seconds
+    // create fruits
+    let difficulty = min(5, floor(score / 100));
+
     if (gameFrames % 72 === 0) {
-        fruits.push(new Fruit());
+
+        let count = 1;
+
+        if (random() < 0.20) {
+            count = floor(random(2, 5));
+        }
+
+        let centerX = random(150, width - 150);
+        for (let i = 0; i < count; i++) {
+            let x = centerX + (i - (count - 1) / 2) * 90;
+            let allowBombs = gameFrames >= 180 && count === 1;
+
+            fruits.push(new Fruit(allowBombs, x, difficulty));
+        }
     }
 
     // update fruits and bombs positions
+
+
     for (let i = fruits.length - 1; i >= 0; i--) {
         let fruit = fruits[i];
 
@@ -102,10 +155,52 @@ function draw() {
         if (fruit.checkCollision(blade)) {
 
             if (fruit.type === "bomb") {
-                gameState = "gameover";
+
+                gameState = "exploding";
                 gameOverReason = "YOU HIT A BOMB!";
+
+                explosionX = fruit.x;
+                explosionY = fruit.y;
+                explosionTimer = 45;
+
+                // Create fiery explosion particles
+                explosionParticles = [];
+
+                for (let j = 0; j < 35; j++) {
+
+                    let angle = random(TWO_PI);
+                    let speed = random(4, 12);
+
+                    explosionParticles.push({
+                        x: explosionX,
+                        y: explosionY,
+                        speedX: cos(angle) * speed,
+                        speedY: sin(angle) * speed,
+                        size: random(6, 16),
+                        life: 255,
+                        color: random([
+                            [255, 70, 0],
+                            [255, 150, 0],
+                            [255, 230, 40],
+                            [255, 255, 180]
+                        ])
+                    });
+                }
+
+                playSound(explosionSound);
+
             } else {
                 score += 10;
+                playSound(sliceSound);
+                for (let j = 0; j < 12; j++) {
+                    particles.push(
+                        new Particle(
+                            fruits[i].x,
+                            fruits[i].y,
+                            fruits[i].particleColor
+                        )
+                    );
+                }
             }
 
             fruits.splice(i, 1);
@@ -116,13 +211,13 @@ function draw() {
             fruits.splice(i, 1);
         }
 
-        if (lives <= 0 || gameState === "gameover") {
+        if (lives <= 0) {
             lives = 0;
             gameState = "gameover";
             gameOverReason = "OUT OF LIVES!";
         }
 
-        if (gameState === "gameover") {
+        if (gameState === "gameover" || gameState === "exploding") {
             break;
         }
     }
@@ -132,8 +227,89 @@ function draw() {
     if (gameState === "gameover") {
         displayGameOver();
     }
+
+    for (let i = particles.length - 1; i >= 0; i--) {
+        particles[i].update();
+        particles[i].display();
+
+        if (particles[i].life <= 0) {
+            particles.splice(i, 1);
+        }
+    }
 }
 
+
+function displayExplosion() {
+    if (explosionTimer <= 0) return;
+
+    push();
+
+    let progress = 1 - explosionTimer / 45;
+    let fade = 255 * (1 - progress);
+
+    // Bright screen flash at the beginning
+    noStroke();
+    fill(255, 100, 20, max(0, 160 - progress * 600));
+    rect(0, 0, width, height);
+
+    // Large expanding orange ring
+    noFill();
+    stroke(255, 80, 0, fade);
+    strokeWeight(12 * (1 - progress));
+    circle(explosionX, explosionY, 50 + progress * 400);
+
+    // Smaller yellow ring
+    stroke(255, 220, 50, fade);
+    strokeWeight(6 * (1 - progress));
+    circle(explosionX, explosionY, 30 + progress * 280);
+
+    // Bright explosion centre
+    noStroke();
+    fill(255, 240, 100, fade);
+    circle(explosionX, explosionY, 100 * (1 - progress));
+
+    pop();
+
+    // Draw fiery particles
+    displayExplosionParticles();
+
+    explosionTimer--;
+}
+
+function displayExplosionParticles() {
+
+    for (let p of explosionParticles) {
+
+        // Move particles outward
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        // Gradually slow down
+        p.speedX *= 0.96;
+        p.speedY *= 0.96;
+
+        // Fade away
+        p.life -= 6;
+
+        push();
+        noStroke();
+
+        fill(
+            p.color[0],
+            p.color[1],
+            p.color[2],
+            max(0, p.life)
+        );
+
+        circle(
+            p.x,
+            p.y,
+            p.size * max(0, p.life / 255)
+        );
+
+        pop();
+    }
+}
 
 function displayStartScreen() {
     push();
@@ -267,8 +443,11 @@ function keyPressed() {
         score = 0;
         lives = 10;
         fruits = [];
+        particles = [];
         gameFrames = 0;
         gameOverReason = "";
         gameState = "playing";
+        explosionTimer = 0;
+        explosionParticles = [];
     }
 }

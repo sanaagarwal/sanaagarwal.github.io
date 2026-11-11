@@ -38,28 +38,8 @@ class Blade {
 
     display() {
         push();
-        noStroke();
-
-        fill(255);
-        triangle(
-            this.x, this.y - this.length,
-            this.x - 14, this.y,
-            this.x + 14, this.y
-        );
-
-        fill(160, 225, 255);
-        triangle(
-            this.x, this.y - this.length + 20,
-            this.x - 6, this.y,
-            this.x + 6, this.y
-        );
-
-        stroke(255, 190, 50);
-        strokeWeight(9);
-        strokeCap(ROUND);
-
-        line(this.x - 18, this.y, this.x + 18, this.y);
-
+        imageMode(CENTER);
+        image(knife, this.x, this.y - 40, 140, 150);
         pop();
     }
 }
