@@ -63,7 +63,7 @@ class Particle {
         this.color = color;
         this.speedX = random(-3, 3);
         this.speedY = random(-3, 3);
-        this.size = random(4, 9);
+        this.size = random(6,10);
         this.life = 255;
     }
 

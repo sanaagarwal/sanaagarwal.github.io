@@ -1,4 +1,3 @@
-// Start, pause, score and game-over screens.
 function displayStartScreen() {
     push();
     fill(0, 150); noStroke(); rect(0, 0, width, height);

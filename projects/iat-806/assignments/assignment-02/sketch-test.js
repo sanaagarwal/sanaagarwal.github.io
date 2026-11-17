@@ -53,7 +53,6 @@ function playSound(sound) {
 }
 
 function draw() {
-    // During the explosion, freeze the whole scene behind the effects.
     if ((gameState === "exploding" || gameState === "gameover") && frozenScene) {
         push();
         if (gameState === "exploding" && explosionShake > 0.5) {
@@ -64,7 +63,6 @@ function draw() {
         image(frozenScene, -20, -20, width + 40, height + 40);
         pop();
     } else {
-        // Mirror the live webcam so movement feels natural.
         push();
         translate(width, 0);
         scale(-1, 1);
@@ -107,9 +105,8 @@ function draw() {
     }
 
     gameFrames++;
-    let difficulty = min(5, floor(score / 100));
+    let difficulty = min(10, floor(score / 80));
 
-    // A bomb arrives every 4–7 waves, rather than relying on a tiny chance.
     if (gameFrames % 72 === 0) {
         wavesSinceBomb++;
         if (wavesSinceBomb >= nextBombWave) {
@@ -129,7 +126,6 @@ function draw() {
         }
     }
 
-    // Update fruits and check blade collisions.
     for (let i = fruits.length - 1; i >= 0; i--) {
         let fruit = fruits[i];
         fruit.update();
@@ -139,7 +135,6 @@ function draw() {
             if (fruit.type === "bomb") {
                 gameState = "exploding";
                 gameOverReason = "YOU HIT A BOMB!";
-                // Freeze the webcam scene, then shake on impact.
                 frozenScene = get();
                 explosionShake = 18;
                 explosion.start(fruit.x, fruit.y);
@@ -168,7 +163,6 @@ function draw() {
     displayScore();
     if (gameState === "gameover") displayGameOver();
 
-    // Fruit juice particles.
     for (let i = particles.length - 1; i >= 0; i--) {
         particles[i].update();
         particles[i].display();

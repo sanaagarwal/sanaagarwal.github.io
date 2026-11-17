@@ -1,4 +1,3 @@
-// Fire, smoke and sparks. No emoji debris or starburst.
 class Explosion {
     constructor() {
         this.reset();
@@ -8,7 +7,7 @@ class Explosion {
         this.x = x;
         this.y = y;
         this.frame = 0;
-        this.duration = 78; // About two seconds at 60 FPS
+        this.duration = 78;
         this.active = true;
         this.finished = false;
         this.particles = [];
