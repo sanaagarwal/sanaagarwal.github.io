@@ -1,0 +1,25 @@
+/* style.css: the same simple style as the page from class, shared by every example. */
+
+body {
+  font-family: system-ui, sans-serif;
+  max-width: 640px;
+  margin: 40px auto;
+  padding: 0 16px;
+}
+
+input,
+textarea,
+button {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  font: inherit;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+pre {
+  background: #f2f2f2;
+  padding: 12px;
+  white-space: pre-wrap;
+}
